@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部署说明 - 圣诞礼物心愿抽签系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #4a5568;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .step {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .step h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .step p {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .code {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .highlight {
+            background: #667eea;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #fed7d7;
+            border-left: 4px solid #e53e3e;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        
+        .success {
+            background: #c6f6d5;
+            border-left: 4px solid #38a169;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 部署说明</h1>
+            <p>将圣诞抽签系统部署到网上，分享给团队使用</p>
+        </div>
+        
+        <div class="content">
+            <div class="success">
+                <h3>✅ 项目已准备就绪</h3>
+                <p>所有必要文件已创建完成，您可以选择以下任一方式进行部署。</p>
+            </div>
+            
+            <div class="step">
+                <h3>🌟 方案1：Vercel（最推荐）</h3>
+                <p>1. 访问 <span class="highlight">vercel.com</span> 并注册登录</p>
+                <p>2. 点击 "New Project" 创建新项目</p>
+                <p>3. 上传项目文件夹或连接GitHub仓库</p>
+                <p>4. 部署完成后获得网址，如：<span class="highlight">your-project.vercel.app</span></p>
+                <p><strong>优点：</strong>免费、快速、自动HTTPS、全球CDN</p>
+            </div>
+            
+            <div class="step">
+                <h3>🚀 方案2：Netlify</h3>
+                <p>1. 访问 <span class="highlight">netlify.com</span> 并注册</p>
+                <p>2. 直接拖拽项目文件夹到部署区域</p>
+                <p>3. 自动部署并获得网址</p>
+                <p><strong>优点：</strong>操作简单、拖拽部署</p>
+            </div>
+            
+            <div class="step">
+                <h3>📁 方案3：GitHub Pages</h3>
+                <p>1. 在GitHub创建新仓库</p>
+                <p>2. 上传所有项目文件</p>
+                <p>3. 在仓库设置中启用GitHub Pages</p>
+                <p>4. 获得网址：<span class="highlight">username.github.io/repository-name</span></p>
+            </div>
+            
+            <div class="step">
+                <h3>📦 需要部署的文件</h3>
+                <div class="code">
+项目根目录/
+├── index.html          # 欢迎页面
+├── personal-draw.html  # 主抽签页面  
+├── admin-results.html  # 管理员页面
+├── README.md          # 项目说明
+└── package.json       # 项目配置
+                </div>
+            </div>
+            
+            <div class="warning">
+                <h3>⚠️ 重要提醒</h3>
+                <p>• 数据存储在用户浏览器本地，不同设备间不共享</p>
+                <p>• 建议团队成员在同一时间段完成抽签</p>
+                <p>• 管理员账户：<span class="highlight">admin</span></p>
+            </div>
+            
+            <div class="step">
+                <h3>🔗 部署完成后</h3>
+                <p>1. 获得网址后，分享给团队成员</p>
+                <p>2. 每个人使用自己的英文ID登录</p>
+                <p>3. 点击"召唤圣诞老人"进行抽签</p>
+                <p>4. 管理员可查看所有抽签情况</p>
+            </div>
+            
+            <div class="success">
+                <h3>🎄 祝您部署顺利！</h3>
+                <p>如有问题，请检查部署指南或联系技术支持。</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

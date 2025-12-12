@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>礼物抽签系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: white;
+            padding: 40px 30px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .option-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .option-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+        
+        .option-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .option-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        
+        .option-desc {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            background: #f7fafc;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #718096;
+        }
+        
+        .admin-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #e53e3e;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 12px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .admin-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎁 礼物抽签系统</h1>
+            <p>欢迎参与交换礼物活动</p>
+        </div>
+        
+        <div class="content">
+            <div class="option-card" onclick="location.href='personal-draw.html'">
+                <div class="option-icon">🎲</div>
+                <div class="option-title">开始抽签</div>
+                <div class="option-desc">
+                    输入你的英文ID，抽取一个神秘心愿<br>
+                    每人仅限一次机会
+                </div>
+            </div>
+            
+            <div class="option-card" onclick="location.href='index.html'">
+                <div class="option-icon">👥</div>
+                <div class="option-title">查看原版</div>
+                <div class="option-desc">
+                    查看原始的集体抽签程序<br>
+                    显示所有匹配结果
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🔒 每个用户只能抽签一次，结果永久保存</p>
+            <p>📱 支持手机和电脑访问</p>
+        </div>
+    </div>
+    
+    <a href="admin-results.html" class="admin-link">🔒 管理</a>
+</body>
+</html>

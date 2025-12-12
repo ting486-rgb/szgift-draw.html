@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣诞礼物心愿抽签</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #4a5568;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        /* 管理员设置界面 */
+        .admin-setup {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .setup-card {
+            background: #f0f8fb;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .setup-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .setup-description {
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .room-code {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .share-url {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            word-break: break-all;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* 登录界面样式 */
+        .login-section {
+            text-align: center;
+        }
+        
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .error-message {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* 主界面样式 */
+        .main-section {
+            display: none;
+        }
+        
+        .user-info {
+            background: #f0f8fb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .user-id {
+            font-size: 14px;
+            color: #718096;
+        }
+        
+        .draw-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .draw-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .draw-button:hover:not(:disabled) {
+            background: linear-gradient(45deg, #5a67d8, #6b46c1);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .draw-button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .wish-content {
+            font-size: 16px;
+            color: #4a5568;
+            line-height: 1.6;
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .draw-time {
+            font-size: 12px;
+            color: #718096;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .notice {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+            animation: fadeInOut 3s ease;
+        }
+        
+        .notice.success {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .notice.error {
+            background: #e53e3e;
+            color: white;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-20px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+        
+        .copy-button {
+            background: #38a169;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .copy-button:hover {
+            background: #2f855a;
+        }
+        
+        /* 管理员面板样式 */
+        .admin-panel {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .admin-card {
+            background: #fff5f5;
+            border: 2px solid #e53e3e;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .admin-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #c53030;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .admin-stats {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .stats-item {
+            display: inline-block;
+            margin: 0 15px;
+            font-size: 14px;
+            color: #4a5568;
+        }
+        
+        .stats-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d3748;
+            display: block;
+        }
+        
+        .results-table {
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            min-width: 600px;
+        }
+        
+        .result-row {
+            display: flex;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            align-items: center;
+            min-width: 580px;
+        }
+        
+        .result-row:last-child {
+            border-bottom: none;
+        }
+        
+        .result-row.header {
+            background: #f7fafc;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .result-row.drawn {
+            background: #f0fff4;
+        }
+        
+        .result-row.not-drawn {
+            background: #fffaf0;
+        }
+        
+        .user-name-col {
+            flex: 0 0 140px;
+            font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .wish-col {
+            flex: 1;
+            color: #4a5568;
+            padding: 0 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .owner-col {
+            flex: 0 0 120px;
+            color: #2d3748;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .time-col {
+            flex: 0 0 80px;
+            font-size: 12px;
+            color: #718096;
+            text-align: center;
+        }
+        
+        .status-col {
+            flex: 0 0 80px;
+            text-align: center;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-drawn {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .status-waiting {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        
+        .admin-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn-danger {
+            background: #e53e3e;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c53030;
+        }
+        
+        .btn-info {
+            background: #3182ce;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: #2c5282;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+            
+            .results-table {
+                font-size: 12px;
+                min-width: 500px;
+            }
+            
+            .result-row {
+                padding: 8px;
+                min-width: 480px;
+            }
+            
+            .user-name-col {
+                flex: 0 0 100px;
+                font-size: 11px;
+            }
+            
+            .wish-col {
+                font-size: 11px;
+            }
+            
+            .owner-col {
+                flex: 0 0 90px;
+                font-size: 11px;
+            }
+            
+            .time-col {
+                flex: 0 0 60px;
+                font-size: 10px;
+            }
+            
+            .status-col {
+                flex: 0 0 60px;
+            }
+            
+            .status-badge {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+            
+            .admin-stats {
+                font-size: 12px;
+            }
+            
+            .stats-item {
+                margin: 0 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎄 圣诞礼物心愿抽签 🎅</h1>
+            <p>输入你的ID，让圣诞老人为你送来神秘心愿（每人仅限一次）</p>
+        </div>
+        
+        <div class="content">
+            <!-- 管理员设置界面 -->
+            <div class="admin-setup" id="adminSetup">
+                <div class="setup-card">
+                    <div class="setup-title">🔧 管理员设置</div>
+                    <div class="setup-description">
+                        作为管理员，您需要创建一个房间码，让所有参与者使用相同的房间码进行抽签，这样可以确保数据同步。
+                    </div>
+                    <button class="draw-button" id="createRoomBtn">创建房间</button>
+                    <div id="roomInfo" style="display: none;">
+                        <div class="setup-title">房间码：</div>
+                        <div class="room-code" id="roomCode"></div>
+                        <div class="setup-description">
+                            请将以下链接分享给所有参与者：
+                        </div>
+                        <div class="share-url" id="shareUrl"></div>
+                        <button class="copy-button" id="copyUrlBtn">复制链接</button>
+                        <br><br>
+                        <button class="btn btn-primary" id="enterRoomBtn">进入房间</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 登录界面 -->
+            <div class="login-section" id="loginSection" style="display: none;">
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="userIdInput">请输入你的英文ID：</label>
+                        <input type="text" id="userIdInput" placeholder="例如：liztang" autocomplete="off">
+                        <div class="error-message" id="errorMessage">ID不存在，请检查输入</div>
+                    </div>
+                    <button class="draw-button" id="loginBtn">登录</button>
+                </div>
+            </div>
+            
+            <!-- 主界面 -->
+            <div class="main-section" id="mainSection">
+                <div class="user-info" id="userInfo">
+                    <div class="user-name" id="userName"></div>
+                    <div class="user-id" id="userIdDisplay"></div>
+                </div>
+                
+                <div class="draw-section">
+                    <button class="draw-button" id="drawBtn">🎅 召唤圣诞老人</button>
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>圣诞老人正在从北极赶来...</p>
+                    </div>
+                </div>
+                
+                <div class="result-card" id="resultCard">
+                    <div class="result-title">🎯 你抽到的心愿是：</div>
+                    <div class="wish-content" id="wishContent"></div>
+                    <div class="draw-time" id="drawTime"></div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="logoutBtn">退出登录</button>
+                </div>
+                
+                <!-- 管理员面板 -->
+                <div class="admin-panel" id="adminPanel">
+                    <div class="admin-card">
+                        <div class="admin-title">🔧 管理员控制面板</div>
+                        
+                        <div class="admin-stats" id="adminStats">
+                            <div class="stats-item">
+                                <span class="stats-number" id="totalUsers">0</span>
+                                <span>总用户数</span>
+                            </div>
+                            <div class="stats-item">
+                                <span class="stats-number" id="drawnUsers">0</span>
+                                <span>已抽签</span>
+                            </div>
+                            <div class="stats-item">
+                                <span class="stats-number" id="remainingUsers">0</span>
+                                <span>未抽签</span>
+                            </div>
+                        </div>
+                        
+                        <div class="results-table" id="resultsTable">
+                            <!-- 抽签结果表格将在这里动态生成 -->
+                        </div>
+                        
+                        <!-- 配对概览 -->
+                        <div class="admin-card" style="margin-top: 20px; background: #f0f8ff;">
+                            <div class="admin-title" style="color: #2b6cb0;">📋 配对概览</div>
+                            <div id="pairingOverview" style="font-size: 14px; line-height: 1.6;">
+                                <!-- 配对信息将在这里显示 -->
+                            </div>
+                        </div>
+                        
+                        <div class="admin-actions">
+                            <button class="btn btn-info" id="refreshResultsBtn">🔄 刷新数据</button>
+                            <button class="btn btn-danger" id="resetAllBtn">🗑️ 重置所有数据</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notice" id="notice"></div>
+
+    <script>
+        // 用户数据表
+        const users = [
+            { id: 'admin', name: '管理员', wish: '管理系统', isAdmin: true },
+            { id: 'liztang', name: '唐丽丽', wish: '温馨的礼物' },
+            { id: 'mandycfhe', name: '何翠芳', wish: '随意' },
+            { id: 'joyycsun', name: '孙叶超', wish: '随意' },
+            { id: 'jadyjian', name: '蹇筱佳', wish: '实用 简约 好看' },
+            { id: 'swanyuan', name: '袁双双', wish: '实用性、长期可用的、好看' },
+            { id: 'tingtingong', name: '龔婷', wish: '实用的 让人轻松的 幸福感提升的' },
+            { id: 'anqifeng', name: 'AN QI FENG', wish: '香薰蜡烛' },
+            { id: 'vivhuang', name: '黄维舟', wish: '小伙伴准备的都喜欢～' },
+            { id: 'rosiessluo', name: '罗思思', wish: '漂亮 实用 品质' },
+            { id: 'ludwigmo', name: '莫小芃', wish: '治愈' },
+            { id: 'jingjin', name: 'jingjin', wish: '实用' },
+            { id: 'feliciajin', name: 'feliciajin', wish: 'kids，funny，not doll' }
+        ];
+        
+        // DOM 元素
+        const adminSetup = document.getElementById('adminSetup');
+        const loginSection = document.getElementById('loginSection');
+        const mainSection = document.getElementById('mainSection');
+        const createRoomBtn = document.getElementById('createRoomBtn');
+        const roomInfo = document.getElementById('roomInfo');
+        const roomCode = document.getElementById('roomCode');
+        const shareUrl = document.getElementById('shareUrl');
+        const copyUrlBtn = document.getElementById('copyUrlBtn');
+        const enterRoomBtn = document.getElementById('enterRoomBtn');
+        const userIdInput = document.getElementById('userIdInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const userName = document.getElementById('userName');
+        const userIdDisplay = document.getElementById('userIdDisplay');
+        const drawBtn = document.getElementById('drawBtn');
+        const loading = document.getElementById('loading');
+        const resultCard = document.getElementById('resultCard');
+        const wishContent = document.getElementById('wishContent');
+        const drawTime = document.getElementById('drawTime');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const notice = document.getElementById('notice');
+        
+        // 管理员面板元素
+        const adminPanel = document.getElementById('adminPanel');
+        const adminStats = document.getElementById('adminStats');
+        const totalUsers = document.getElementById('totalUsers');
+        const drawnUsers = document.getElementById('drawnUsers');
+        const remainingUsers = document.getElementById('remainingUsers');
+        const resultsTable = document.getElementById('resultsTable');
+        const refreshResultsBtn = document.getElementById('refreshResultsBtn');
+        const resetAllBtn = document.getElementById('resetAllBtn');
+        const pairingOverview = document.getElementById('pairingOverview');
+        
+        // 当前登录用户和房间码
+        let currentUser = null;
+        let currentRoomCode = null;
+        
+        // 获取URL参数
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // 生成房间码
+        function generateRoomCode() {
+            return Math.random().toString(36).substr(2, 6).toUpperCase();
+        }
+        
+        // 获取存储键名
+        function getStorageKey() {
+            return `giftDrawRecords_${currentRoomCode}`;
+        }
+        
+        // 获取抽签记录（尝试从URL参数获取共享数据）
+        function getDrawRecords() {
+            const localRecords = localStorage.getItem(getStorageKey());
+            return localRecords ? JSON.parse(localRecords) : {};
+        }
+        
+        // 保存抽签记录（同时更新URL以便共享）
+        function saveDrawRecord(userId, wish, timestamp) {
+            const records = getDrawRecords();
+            records[userId] = { wish, timestamp };
+            localStorage.setItem(getStorageKey(), JSON.stringify(records));
+            
+            // 为了演示目的，我们在控制台输出当前房间的所有记录
+            console.log(`房间 ${currentRoomCode} 的抽签记录:`, records);
+        }
+        
+        // 显示通知
+        function showNotice(message, type = 'success') {
+            notice.textContent = message;
+            notice.className = `notice ${type}`;
+            notice.style.display = 'block';
+            setTimeout(() => {
+                notice.style.display = 'none';
+            }, 3000);
+        }
+        
+        // 创建房间
+        function createRoom() {
+            currentRoomCode = generateRoomCode();
+            roomCode.textContent = currentRoomCode;
+            
+            const baseUrl = window.location.origin + window.location.pathname;
+            const fullUrl = `${baseUrl}?room=${currentRoomCode}`;
+            shareUrl.textContent = fullUrl;
+            
+            roomInfo.style.display = 'block';
+            createRoomBtn.style.display = 'none';
+            
+            showNotice('房间创建成功！请分享链接给参与者');
+        }
+        
+        // 复制链接
+        function copyUrl() {
+            const url = shareUrl.textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                showNotice('链接已复制到剪贴板！');
+            }).catch(() => {
+                // 备用复制方法
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotice('链接已复制到剪贴板！');
+            });
+        }
+        
+        // 进入房间
+        function enterRoom() {
+            adminSetup.style.display = 'none';
+            loginSection.style.display = 'block';
+        }
+        
+        // 用户登录
+        function login() {
+            const inputId = userIdInput.value.trim().toLowerCase();
+            
+            if (!inputId) {
+                errorMessage.textContent = '请输入你的ID';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            const user = users.find(u => u.id.toLowerCase() === inputId);
+            
+            if (!user) {
+                errorMessage.textContent = 'ID不存在，请检查输入';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            currentUser = user;
+            errorMessage.style.display = 'none';
+            
+            // 显示用户信息
+            if (user.isAdmin) {
+                userName.textContent = `${user.name} - 管理员模式`;
+                userIdDisplay.textContent = `房间: ${currentRoomCode} | 管理员权限`;
+            } else {
+                userName.textContent = user.name;
+                userIdDisplay.textContent = `ID: ${user.id} | 房间: ${currentRoomCode}`;
+            }
+            
+            // 切换界面
+            loginSection.style.display = 'none';
+            mainSection.style.display = 'block';
+            
+            // 如果是管理员，只显示管理面板，隐藏抽签功能
+            if (user.isAdmin) {
+                // 隐藏抽签相关元素
+                document.querySelector('.draw-section').style.display = 'none';
+                resultCard.style.display = 'none';
+                
+                // 显示管理面板
+                adminPanel.style.display = 'block';
+                updateAdminPanel();
+                
+                showNotice(`欢迎回来，${user.name}！您可以查看和管理所有抽签数据。`);
+            } else {
+                // 普通用户显示抽签功能
+                document.querySelector('.draw-section').style.display = 'block';
+                adminPanel.style.display = 'none';
+                
+                // 检查是否有历史记录
+                checkExistingRecord();
+                
+                showNotice(`欢迎回来，${user.name}！`);
+            }
+        }
+        
+        // 检查现有记录
+        function checkExistingRecord() {
+            // 如果是管理员，不需要检查抽签记录
+            if (currentUser && currentUser.isAdmin) {
+                return;
+            }
+            
+            const records = getDrawRecords();
+            const userRecord = records[currentUser.id];
+            
+            if (userRecord) {
+                // 显示历史记录
+                displayResult(userRecord.wish, userRecord.timestamp, true);
+                drawBtn.style.display = 'none';
+            } else {
+                // 没有记录，显示抽签按钮
+                resultCard.style.display = 'none';
+                drawBtn.style.display = 'inline-block';
+            }
+        }
+        
+        // 随机抽取心愿
+        function drawWish() {
+            const records = getDrawRecords();
+            
+            // 获取已经被抽取的心愿
+            const takenWishes = Object.values(records).map(record => record.wish);
+            
+            // 获取除当前用户外的所有心愿，并排除已被抽取的
+            const availableWishes = users
+                .filter(user => user.id !== currentUser.id && !user.isAdmin)
+                .map(user => user.wish)
+                .filter(wish => !takenWishes.includes(wish));
+            
+            if (availableWishes.length === 0) {
+                showNotice('所有心愿都已被抽取完毕！', 'error');
+                return null;
+            }
+            
+            // 随机选择一个心愿
+            const randomIndex = Math.floor(Math.random() * availableWishes.length);
+            return availableWishes[randomIndex];
+        }
+        
+        // 开始抽签
+        function startDraw() {
+            // 检查是否是管理员
+            if (currentUser && currentUser.isAdmin) {
+                showNotice('管理员不能参与抽签！', 'error');
+                return;
+            }
+            
+            drawBtn.disabled = true;
+            loading.style.display = 'block';
+            resultCard.style.display = 'none';
+            
+            // 检查是否已经抽过
+            const records = getDrawRecords();
+            if (records[currentUser.id]) {
+                loading.style.display = 'none';
+                drawBtn.disabled = false;
+                showNotice('您已经抽过签了！', 'error');
+                return;
+            }
+            
+            // 模拟抽签过程
+            setTimeout(() => {
+                const selectedWish = drawWish();
+                
+                if (!selectedWish) {
+                    loading.style.display = 'none';
+                    drawBtn.disabled = false;
+                    return;
+                }
+                
+                const timestamp = new Date().toLocaleString();
+                
+                // 保存记录
+                saveDrawRecord(currentUser.id, selectedWish, timestamp);
+                
+                // 隐藏加载状态
+                loading.style.display = 'none';
+                drawBtn.style.display = 'none';
+                
+                // 显示结果
+                displayResult(selectedWish, timestamp, false);
+                showNotice('🎄 抽签完成！结果已保存 🎁');
+                
+                // 如果当前用户是管理员，更新管理面板
+                if (currentUser && currentUser.isAdmin) {
+                    updateAdminPanel();
+                }
+                
+            }, 2000);
+        }
+        
+        // 显示抽签结果
+        function displayResult(wish, timestamp, isHistorical = false) {
+            wishContent.textContent = wish;
+            drawTime.textContent = `抽签时间：${timestamp}${isHistorical ? ' (历史记录)' : ''}`;
+            
+            resultCard.style.display = 'block';
+            drawBtn.disabled = false;
+        }
+        
+        // 管理员功能：更新管理面板
+        function updateAdminPanel() {
+            if (!currentUser || !currentUser.isAdmin) return;
+            
+            const records = getDrawRecords();
+            const regularUsers = users.filter(user => !user.isAdmin);
+            
+            // 更新统计数据
+            const total = regularUsers.length;
+            const drawn = Object.keys(records).filter(id => id !== 'admin').length;
+            const remaining = total - drawn;
+            
+            totalUsers.textContent = total;
+            drawnUsers.textContent = drawn;
+            remainingUsers.textContent = remaining;
+            
+            // 更新结果表格
+            updateResultsTable();
+            
+            // 更新配对概览
+            updatePairingOverview();
+        }
+        
+        // 管理员功能：更新结果表格
+        function updateResultsTable() {
+            const records = getDrawRecords();
+            const regularUsers = users.filter(user => !user.isAdmin);
+            
+            resultsTable.innerHTML = '';
+            
+            // 添加表头
+            const headerRow = document.createElement('div');
+            headerRow.className = 'result-row header';
+            headerRow.innerHTML = `
+                <div class="user-name-col">抽签用户</div>
+                <div class="wish-col">抽到的心愿</div>
+                <div class="owner-col">心愿主人</div>
+                <div class="time-col">抽签时间</div>
+                <div class="status-col">状态</div>
+            `;
+            resultsTable.appendChild(headerRow);
+            
+            // 添加用户数据
+            regularUsers.forEach(user => {
+                const userRecord = records[user.id];
+                const row = document.createElement('div');
+                row.className = `result-row ${userRecord ? 'drawn' : 'not-drawn'}`;
+                
+                const statusBadge = userRecord 
+                    ? '<span class="status-badge status-drawn">已抽签</span>'
+                    : '<span class="status-badge status-waiting">未抽签</span>';
+                
+                let wishText = '尚未抽签';
+                let ownerText = '-';
+                let timeText = '-';
+                
+                if (userRecord) {
+                    wishText = userRecord.wish;
+                    timeText = userRecord.timestamp.split(' ')[1];
+                    
+                    // 找到心愿的主人
+                    const wishOwner = users.find(u => u.wish === userRecord.wish && !u.isAdmin);
+                    ownerText = wishOwner ? `${wishOwner.name} (${wishOwner.id})` : '未知用户';
+                }
+                
+                row.innerHTML = `
+                    <div class="user-name-col">${user.name} (${user.id})</div>
+                    <div class="wish-col">${wishText}</div>
+                    <div class="owner-col">${ownerText}</div>
+                    <div class="time-col">${timeText}</div>
+                    <div class="status-col">${statusBadge}</div>
+                `;
+                
+                resultsTable.appendChild(row);
+            });
+        }
+        
+        // 管理员功能：更新配对概览
+        function updatePairingOverview() {
+            const records = getDrawRecords();
+            const regularUsers = users.filter(user => !user.isAdmin);
+            
+            let overviewHTML = '';
+            
+            if (Object.keys(records).filter(id => id !== 'admin').length === 0) {
+                overviewHTML = '<p style="color: #718096; text-align: center;">暂无配对数据</p>';
+            } else {
+                overviewHTML = '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">';
+                
+                // 已配对的用户
+                const pairedUsers = [];
+                Object.keys(records).forEach(userId => {
+                    if (userId !== 'admin') {
+                        const user = users.find(u => u.id === userId);
+                        const userRecord = records[userId];
+                        const wishOwner = users.find(u => u.wish === userRecord.wish && !u.isAdmin);
+                        
+                        if (user && wishOwner) {
+                            pairedUsers.push({
+                                drawer: user,
+                                owner: wishOwner,
+                                wish: userRecord.wish,
+                                time: userRecord.timestamp
+                            });
+                        }
+                    }
+                });
+                
+                // 显示配对信息
+                pairedUsers.forEach(pair => {
+                    overviewHTML += `
+                        <div style="background: white; padding: 12px; border-radius: 8px; border-left: 4px solid #48bb78;">
+                            <div style="font-weight: bold; color: #2d3748; margin-bottom: 5px;">
+                                ${pair.drawer.name} → ${pair.owner.name}
+                            </div>
+                            <div style="color: #4a5568; font-size: 13px; margin-bottom: 3px;">
+                                心愿：${pair.wish}
+                            </div>
+                            <div style="color: #718096; font-size: 12px;">
+                                ${pair.time}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // 未抽签的用户
+                const undrawnUsers = regularUsers.filter(user => !records[user.id]);
+                if (undrawnUsers.length > 0) {
+                    overviewHTML += `
+                        <div style="background: #fffaf0; padding: 12px; border-radius: 8px; border-left: 4px solid #ed8936;">
+                            <div style="font-weight: bold; color: #c05621; margin-bottom: 8px;">
+                                未抽签用户 (${undrawnUsers.length}人)
+                            </div>
+                            ${undrawnUsers.map(user => 
+                                `<div style="color: #744210; font-size: 13px;">• ${user.name} (${user.id})</div>`
+                            ).join('')}
+                        </div>
+                    `;
+                }
+                
+                overviewHTML += '</div>';
+            }
+            
+            pairingOverview.innerHTML = overviewHTML;
+        }
+        
+        // 管理员功能：重置所有数据
+        function resetAllData() {
+            if (!currentUser || !currentUser.isAdmin) {
+                showNotice('只有管理员可以重置数据！', 'error');
+                return;
+            }
+            
+            if (confirm('⚠️ 确定要重置所有抽签数据吗？此操作不可恢复！')) {
+                localStorage.removeItem(getStorageKey());
+                updateAdminPanel();
+                showNotice('✅ 所有数据已重置！');
+                
+                // 如果当前用户不是管理员，重置其状态
+                if (currentUser.id !== 'admin') {
+                    checkExistingRecord();
+                }
+            }
+        }
+        
+        // 管理员功能：刷新数据
+        function refreshResults() {
+            if (!currentUser || !currentUser.isAdmin) return;
+            updateAdminPanel();
+            showNotice('数据已刷新！');
+        }
+        
+        // 退出登录
+        function logout() {
+            currentUser = null;
+            userIdInput.value = '';
+            
+            // 切换界面
+            mainSection.style.display = 'none';
+            loginSection.style.display = 'block';
+            
+            // 重置所有状态
+            resultCard.style.display = 'none';
+            loading.style.display = 'none';
+            drawBtn.style.display = 'inline-block';
+            drawBtn.disabled = false;
+            errorMessage.style.display = 'none';
+            adminPanel.style.display = 'none'; // 隐藏管理员面板
+            
+            // 恢复抽签功能显示（为普通用户准备）
+            document.querySelector('.draw-section').style.display = 'block';
+            
+            showNotice('已退出登录');
+        }
+        
+        // 事件监听
+        createRoomBtn.addEventListener('click', createRoom);
+        copyUrlBtn.addEventListener('click', copyUrl);
+        enterRoomBtn.addEventListener('click', enterRoom);
+        loginBtn.addEventListener('click', login);
+        drawBtn.addEventListener('click', startDraw);
+        logoutBtn.addEventListener('click', logout);
+        
+        // 管理员功能事件监听
+        refreshResultsBtn.addEventListener('click', refreshResults);
+        resetAllBtn.addEventListener('click', resetAllData);
+        
+        // 回车键登录
+        userIdInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+        
+        // 输入时隐藏错误信息
+        userIdInput.addEventListener('input', () => {
+            errorMessage.style.display = 'none';
+        });
+        
+        // 页面加载时检查URL参数
+        window.addEventListener('load', () => {
+            const roomParam = getUrlParameter('room');
+            
+            if (roomParam) {
+                // 通过链接进入，直接使用房间码
+                currentRoomCode = roomParam;
+                adminSetup.style.display = 'none';
+                loginSection.style.display = 'block';
+                userIdInput.focus();
+                showNotice(`已进入房间：${currentRoomCode}`);
+            } else {
+                // 管理员创建房间
+                adminSetup.style.display = 'block';
+                loginSection.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

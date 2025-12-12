@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣诞礼物心愿抽签系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .welcome-container {
+            max-width: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .header {
+            background: #4a5568;
+            color: white;
+            padding: 30px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .description {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .feature {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .feature h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .feature p {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .enter-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .enter-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="header">
+            <h1>🎄 圣诞礼物心愿抽签 🎅</h1>
+            <p>欢迎来到神秘的圣诞心愿世界</p>
+        </div>
+        
+        <div class="content">
+            <div class="description">
+                每个人都有一个美好的心愿，让我们通过抽签的方式，为彼此带来惊喜吧！
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>🎯 公平抽签</h3>
+                    <p>每人仅限一次机会，随机抽取其他人的心愿</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🎁 神秘惊喜</h3>
+                    <p>不知道会抽到谁的心愿，充满期待和惊喜</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>💝 永久记录</h3>
+                    <p>抽签结果永久保存，随时可以查看</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🎄 节日氛围</h3>
+                    <p>精美的圣诞主题界面和动画效果</p>
+                </div>
+            </div>
+            
+            <a href="personal-draw-shared.html" class="enter-button">🎅 开始抽签</a>
+            
+            <div class="footer">
+                <p>🎄 愿每个心愿都能被温柔以待 🎄</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

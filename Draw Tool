@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交换礼物抽签程序</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #4a5568;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .list-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+        
+        .participants-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .participant-item {
+            background: #f7fafc;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .participant-name {
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .participant-wish {
+            font-size: 13px;
+            color: #4a5568;
+            line-height: 1.4;
+        }
+        
+        .result-section {
+            background: #f0f8fb;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .result-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .result-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .gifter {
+            font-weight: bold;
+            color: #2d3748;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .recipient {
+            color: #667eea;
+            font-size: 15px;
+        }
+        
+        .recipient-wish {
+            font-size: 13px;
+            color: #718096;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #e2e8f0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .copied-notice {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+            display: none;
+            z-index: 1000;
+            animation: fadeInOut 2s ease;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-20px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎁 交换礼物抽签程序</h1>
+            <p>公平随机匹配，每个人都不会抽到自己</p>
+        </div>
+        
+        <div class="content">
+            <div class="controls">
+                <button id="drawBtn">开始抽签</button>
+                <button id="resetBtn" disabled>重置</button>
+            </div>
+            
+            <div class="list-section">
+                <h2 class="section-title">参与人员及心愿</h2>
+                <div class="participants-list" id="participantsList"></div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>正在随机匹配中...</p>
+            </div>
+            
+            <div class="result-section" id="resultSection">
+                <h2 class="section-title">🎯 抽签结果</h2>
+                <div class="result-list" id="resultList"></div>
+                
+                <div class="action-buttons">
+                    <button id="copyBtn">复制结果</button>
+                    <button id="exportBtn">导出结果</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="copied-notice" id="copiedNotice">复制成功！</div>
+
+    <script>
+        // 参与人员数据
+        const participants = [
+            { id: 'liztang', name: '唐丽丽', wish: '温馨的礼物' },
+            { id: 'mandycfhe', name: '何翠芳', wish: '随意' },
+            { id: 'joyycsun', name: '孙叶超', wish: '随意' },
+            { id: 'jadyjian', name: '蹇筱佳', wish: '实用 简约 好看' },
+            { id: 'swanyuan', name: '袁双双', wish: '实用性、长期可用的、好看' },
+            { id: 'tingtingong', name: '龔婷', wish: '实用的 让人轻松的 幸福感提升的' },
+            { id: 'anqifeng', name: 'AN QI FENG', wish: '香薰蜡烛' },
+            { id: 'vivhuang', name: '黄维舟', wish: '小伙伴准备的都喜欢～' },
+            { id: 'rosiessluo', name: '罗思思', wish: '漂亮 实用 品质' },
+            { id: 'ludwigmo', name: '莫小芃', wish: '治愈' },
+            { id: 'Jackie', name: 'Jackie', wish: '实用' },
+            { id: 'Feliciajin', name: 'Feliciajin', wish: 'kids，funny，not doll' }
+        ];
+        
+        // DOM 元素
+        const participantsList = document.getElementById('participantsList');
+        const drawBtn = document.getElementById('drawBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const loading = document.getElementById('loading');
+        const resultSection = document.getElementById('resultSection');
+        const resultList = document.getElementById('resultList');
+        const copyBtn = document.getElementById('copyBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const copiedNotice = document.getElementById('copiedNotice');
+        
+        // 初始化参与人员列表
+        function initParticipantsList() {
+            participantsList.innerHTML = '';
+            participants.forEach(person => {
+                const item = document.createElement('div');
+                item.className = 'participant-item';
+                item.innerHTML = `
+                    <div class="participant-name">${person.name} (${person.id})</div>
+                    <div class="participant-wish">🎁 心愿：${person.wish}</div>
+                `;
+                participantsList.appendChild(item);
+            });
+        }
+        
+        // 随机匹配（确保不会抽到自己）
+        function randomMatch() {
+            // 创建参与者ID数组
+            const givers = [...participants.map(p => p.id)];
+            const recipients = [...givers];
+            
+            // Fisher-Yates 洗牌算法
+            function shuffle(array) {
+                let currentIndex = array.length, randomIndex;
+                while (currentIndex != 0) {
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex--;
+                    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+                }
+                return array;
+            }
+            
+            // 洗牌并检查是否有自匹配
+            let shuffledRecipients;
+            let tries = 0;
+            do {
+                shuffledRecipients = shuffle([...recipients]);
+                tries++;
+                // 防止无限循环（理论上不会发生）
+                if (tries > 1000) break;
+            } while (givers.some((giver, index) => giver === shuffledRecipients[index]));
+            
+            // 构建匹配结果
+            const matches = givers.map((giverId, index) => {
+                const recipientId = shuffledRecipients[index];
+                const giver = participants.find(p => p.id === giverId);
+                const recipient = participants.find(p => p.id === recipientId);
+                return { giver, recipient };
+            });
+            
+            return matches;
+        }
+        
+        // 显示抽签结果
+        function displayResults(matches) {
+            resultList.innerHTML = '';
+            matches.forEach(match => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `
+                    <div class="gifter">🎁 赠送者：${match.giver.name}</div>
+                    <div class="recipient">🎯 接收者：${match.recipient.name}</div>
+                    <div class="recipient-wish">💖 接收者心愿：${match.recipient.wish}</div>
+                `;
+                resultList.appendChild(item);
+            });
+            
+            // 显示结果区域
+            loading.style.display = 'none';
+            resultSection.style.display = 'block';
+        }
+        
+        // 复制结果到剪贴板
+        function copyResults() {
+            let text = '交换礼物抽签结果：\n\n';
+            const resultItems = document.querySelectorAll('.result-item');
+            resultItems.forEach((item, index) => {
+                const gifter = item.querySelector('.gifter').textContent.replace('🎁 赠送者：', '');
+                const recipient = item.querySelector('.recipient').textContent.replace('🎯 接收者：', '');
+                const wish = item.querySelector('.recipient-wish').textContent.replace('💖 接收者心愿：', '');
+                text += `${index + 1}. ${gifter} → ${recipient}\n   心愿：${wish}\n\n`;
+            });
+            
+            navigator.clipboard.writeText(text).then(() => {
+                copiedNotice.style.display = 'block';
+                setTimeout(() => {
+                    copiedNotice.style.display = 'none';
+                }, 2000);
+            }).catch(err => {
+                alert('复制失败，请手动复制：' + err);
+            });
+        }
+        
+        // 导出结果为文本文件
+        function exportResults() {
+            let text = '交换礼物抽签结果\n==================\n\n';
+            const resultItems = document.querySelectorAll('.result-item');
+            resultItems.forEach((item, index) => {
+                const gifter = item.querySelector('.gifter').textContent.replace('🎁 赠送者：', '');
+                const recipient = item.querySelector('.recipient').textContent.replace('🎯 接收者：', '');
+                const wish = item.querySelector('.recipient-wish').textContent.replace('💖 接收者心愿：', '');
+                text += `${index + 1}. 赠送者：${gifter}\n   接收者：${recipient}\n   接收者心愿：${wish}\n\n`;
+            });
+            
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `交换礼物抽签结果_${new Date().toLocaleString().replace(/[/:]/g, '-')}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // 事件监听
+        drawBtn.addEventListener('click', () => {
+            // 禁用抽签按钮，启用重置按钮
+            drawBtn.disabled = true;
+            resetBtn.disabled = false;
+            
+            // 显示加载状态
+            loading.style.display = 'block';
+            
+            // 模拟加载延迟，提升用户体验
+            setTimeout(() => {
+                const matches = randomMatch();
+                displayResults(matches);
+            }, 1500);
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            // 重置界面
+            loading.style.display = 'none';
+            resultSection.style.display = 'none';
+            drawBtn.disabled = false;
+            resetBtn.disabled = true;
+        });
+        
+        copyBtn.addEventListener('click', copyResults);
+        exportBtn.addEventListener('click', exportResults);
+        
+        // 初始化
+        initParticipantsList();
+    </script>
+</body>
+</html>

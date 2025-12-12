@@ -1,0 +1,13 @@
+{
+  "name": "christmas-gift-draw",
+  "version": "1.0.0",
+  "description": "圣诞礼物心愿抽签系统",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "build": "echo 'No build step required for static site'"
+  },
+  "keywords": ["christmas", "gift", "draw", "lottery"],
+  "author": "Christmas Team",
+  "license": "MIT"
+}
